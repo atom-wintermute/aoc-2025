@@ -1,25 +1,47 @@
 import Algorithms
 
 struct Day00: AdventDay {
-  // Save your data in a corresponding text file in the `Data` directory.
-  var data: String
-
-  // Splits input data into its component parts and convert from string.
-  var entities: [[Int]] {
-    data.split(separator: "\n\n").map {
-      $0.split(separator: "\n").compactMap { Int($0) }
+    // Save your data in a corresponding text file in the `Data` directory.
+    var data: String
+    
+    struct Command {
+        enum Direction {
+            case left
+            case right
+        }
+        let direction: Direction
+        let distance: Int
     }
-  }
-
-  // Replace this with your solution for the first part of the day's challenge.
-  func part1() -> Any {
-    // Calculate the sum of the first set of input data
-    entities.first?.reduce(0, +) ?? 0
-  }
-
-  // Replace this with your solution for the second part of the day's challenge.
-  func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    entities.map { $0.max() ?? 0 }.reduce(0, +)
-  }
+    
+    // Splits input data into its component parts and convert from string.
+    var entities: [Command] {
+        data.split(separator: "\n").map {
+            let direction: Command.Direction = $0.first == "L" ? .left : .right
+            return Command(direction: direction, distance: Int($0.dropFirst())!)
+        }
+    }
+    
+    func part1() -> Any {
+        var currentPoint = 50
+        var password = 0
+        
+        for entity in entities {
+            switch entity.direction {
+            case .left:
+                currentPoint -= entity.distance
+            case .right:
+                currentPoint += entity.distance
+            }
+            
+            currentPoint = (currentPoint % 100 + 100) % 100
+            if currentPoint == 0 {
+                password += 1
+            }
+        }
+        return password
+    }
+    
+    func part2() -> Any {
+        return false
+    }
 }
