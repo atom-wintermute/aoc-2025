@@ -42,6 +42,36 @@ struct Day00: AdventDay {
     }
     
     func part2() -> Any {
-        return false
+        var currentPoint = 50
+        var password = 0
+        
+        for entity in entities {
+            let prevPoint = currentPoint
+            switch entity.direction {
+            case .left:
+                currentPoint -= entity.distance
+            case .right:
+                currentPoint += entity.distance
+            }
+            
+            currentPoint = (currentPoint % 100 + 100) % 100
+            
+            switch entity.direction {
+            case .left:
+                if (prevPoint - entity.distance) < 0 {
+                    if prevPoint != 0 {
+                        password += (abs(prevPoint - entity.distance) / 100) + 1
+                    } else {
+                        password += abs(prevPoint - entity.distance) / 100
+                    }
+                }
+                if (prevPoint - entity.distance) == 0 {
+                    password += 1
+                }
+            case .right:
+                password += (prevPoint + entity.distance) / 100
+            }
+        }
+        return password
     }
 }

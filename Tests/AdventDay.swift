@@ -7,6 +7,6 @@ struct AdventDayTests {
   
   @Test func testInitData() async throws {
     let challenge = Day00()
-    #expect(challenge.data.starts(with: "3"))
+    #expect(challenge.data.starts(with: "L68"))
   }
 }
